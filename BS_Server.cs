@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
+
 namespace src
 {
 	public class BS_Server
@@ -10,7 +14,7 @@ namespace src
 		private static int port = 1000;
 
 		public BS_Server()
-		{
+        {
            
         }
 
@@ -31,15 +35,22 @@ namespace src
 
         public void SendPosition(int X, int Y)
         {
+            if(clientSocket==null)
+            {
+                Console.WriteLine("Start the server before sending positions stupid");
+                return;
+            }
 
+
+            
         }
 
-        public void GetPosition(int *X, int *Y)
+        public void GetPosition(int[] outPos)
         {
 
         }
 
-        public ~BS_Server()
+        ~BS_Server()
         {
 
             if (passiveSocket != null)
