@@ -47,11 +47,12 @@ namespace src
 
         public string GetPosition(int[] outPos)
         {
+            string position = "";
             do
             {
                 int received = clientSocket.Receive(data);
-                string position = Encoding.UTF8.GetString(data, 0, received).ToLower();
-            } while (GetCoord(position, outPos);
+                position = Encoding.UTF8.GetString(data, 0, received).ToLower();
+            } while (GetCoord(position, outPos));
             return position;
         }
 

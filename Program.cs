@@ -60,7 +60,7 @@ namespace src
                 Ship s = battleField.grid[coordinates[1], coordinates[0]];
                 if (s != null)
                 {
-                    battleField.grid[coordinates[1], coordinates[0] = null;
+                    battleField.grid[coordinates[1], coordinates[0]] = null;
                     s.health--;
                     battleField.Display();
                     if (s.health == 0)
@@ -86,6 +86,7 @@ namespace src
                     Console.WriteLine("... and he missed ! What a loser");
                     server.SendResponse("missed");
                 }
+
 
 
             }
