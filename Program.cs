@@ -58,16 +58,35 @@ namespace src
                 string enemyChoice = server.GetPosition(coordinates);
                 Console.WriteLine("The ennemy is firing at " + enemyChoice);
                 Ship s = battleField.grid[coordinates[1], coordinates[0]];
-                if ( s!= null )
+                if (s != null)
                 {
                     battleField.grid[coordinates[1], coordinates[0] = null;
                     s.health--;
-                    if(s.health==0)
+                    battleField.Display();
+                    if (s.health == 0)
                     {
+                        Console.WriteLine("... and BOOM you got hit !");
                         server.SendResponse("sunk");
+                        myTroops.Remove(s);
+                        Console.WriteLine("your ship got destroyed :'(");
+                        Console.WriteLine("you have " + myTroops.Count + " ship(s) left");
 
                     }
+                    else
+                    {
+                        Console.WriteLine("... and BOOM you got hit !");
+                        server.SendResponse("hit");
+                    }
+
                 }
+
+                else
+                {
+                    battleField.Display();
+                    Console.WriteLine("... and he missed ! What a loser");
+                    server.SendResponse("missed");
+                }
+
 
             }
 
