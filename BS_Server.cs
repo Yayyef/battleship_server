@@ -33,35 +33,46 @@ namespace src
         }
 
 
-        public void SendPosition(int X, int Y)
+   
+        public string GetPosition(int[] outPos)
         {
-            if(clientSocket==null)
+           
+            int received = clientSocket.Receive(data);
+            string position = Encoding.ASCII.GetString(data, 0, received).ToLower();
+            if(!GetCoord(position,outPos))
+            {
+                Console.WriteLine("Bad input from client. Aborting...");
+                return "";
+            }
+
+            return position;
+        }
+
+        public void SendResponse(string message)
+        {
+            if (clientSocket == null)
             {
                 Console.WriteLine("Start the server before sending positions stupid");
                 return;
             }
 
 
-            
+            data = Encoding.ASCII.GetBytes(message);
+            clientSocket.Send(data);
         }
 
-        public string GetPosition(int[] outPos)
+        public string GetResponse()
         {
-            string position = "";
-            do
-            {
-                int received = clientSocket.Receive(data);
-                position = Encoding.UTF8.GetString(data, 0, received).ToLower();
-            } while (GetCoord(position, outPos));
-            return position;
-        }
+             if (clientSocket == null)
+             {
+                Console.WriteLine("Start the server before sending positions stupid");
+                return "" ;
+             }
 
-        public void SendResponse(string message)
-        {
+            int received = clientSocket.Receive(data);
+            return Encoding.ASCII.GetString(data, 0, received).ToLower();
 
         }
-
-
         ~BS_Server()
         {
 

@@ -36,8 +36,8 @@ namespace src
                         Console.WriteLine("Incorrect format");
                         continue;
                     }
-                    int firstCoord = position[0] - 'a', secondCoord = position[1] - '1';
-                    Console.WriteLine("In what direction should it lay ?");
+                    int firstCoord = position[0] - 'a', secondCoord = int.Parse(position.Substring(1))-1;
+                    Console.WriteLine("In what direction should it lay (up/down/left/right?");
                     string direction = Console.ReadLine().ToLower();
                     isOutOfBounds = !battleField.AddShip(myTroops[i], firstCoord, secondCoord, direction);
 
@@ -56,6 +56,8 @@ namespace src
             while (clientShips > 0 && myTroops.Count > 0)
             {
                 string enemyChoice = server.GetPosition(coordinates);
+                if (enemyChoice == "")
+                    break;
                 Console.WriteLine("The ennemy is firing at " + enemyChoice);
                 Ship s = battleField.grid[coordinates[1], coordinates[0]];
                 if (s != null)
@@ -85,6 +87,70 @@ namespace src
                     battleField.Display();
                     Console.WriteLine("... and he missed ! What a loser");
                     server.SendResponse("missed");
+                }
+
+                if(myTroops.Count == 0)
+                {
+                    Console.WriteLine("Game over, you lost");
+                    break;
+                }
+
+                //Au tour du serveur, on affiche la grille de l'ennemi(e)
+                g.Display();
+
+                int x = 0, y = 0;
+                string input = "";
+                bool quit = false;
+
+                Console.WriteLine("Where do you want to fire (from A1 to J10) ?");
+                while (!quit)
+                {
+                    quit = true;
+                    input = Console.ReadLine().ToLower();
+                    if (input.Length < 2)
+                    {
+                        Console.WriteLine("Incorrect input, at least 2 characters try again (from A1 to J10)");
+                        quit = false;
+                    }
+
+                    x = input[0] - 'a';
+                    y = int.Parse(input.Substring(1)) - 1;
+                    if(x<0 || y<0 || x>9 || y>9)
+                    {
+                        Console.WriteLine("Input out of bounds, try again (from A1 to J10) ");
+                        quit = false;
+                    }
+
+
+                }
+
+                server.SendResponse(input);
+                string response = server.GetResponse();
+                switch(response)
+                {
+                    case "missed":
+                        {
+                            g.ChangeState(x, y, false);
+                            break;
+
+                        }
+                    case "hit":
+                        {
+                            g.ChangeState(x, y, true);
+                            break;
+                        }
+
+                    case "sunk":
+                        {
+                            g.ChangeState(x, y, true);
+                            clientShips--;
+                            break;
+                        }
+                    default:
+                        {
+                            Console.WriteLine("The client is a troll");
+                            return;
+                        }
                 }
 
 

@@ -50,7 +50,7 @@ namespace src
 
         public bool AddShip(Ship ship, int x, int y, string direction)
         {
-            if (x < 0 || x >= width || y < 0 || y > length)
+            if (x < 0 || x >= width || y < 0 || y >= length)
             {
                 Console.WriteLine("Your ship is out of bounds.");
                 return false;
