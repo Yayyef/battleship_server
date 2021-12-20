@@ -45,10 +45,21 @@ namespace src
             
         }
 
-        public void GetPosition(int[] outPos)
+        public string GetPosition(int[] outPos)
+        {
+            do
+            {
+                int received = clientSocket.Receive(data);
+                string position = Encoding.UTF8.GetString(data, 0, received).ToLower();
+            } while (GetCoord(position, outPos);
+            return position;
+        }
+
+        public void SendResponse(string message)
         {
 
         }
+
 
         ~BS_Server()
         {
@@ -64,7 +75,14 @@ namespace src
             }
         }
 
-
+        public bool GetCoord(string position, int [] coord)
+        {
+            if (position.Length < 2)
+                return false;
+            coord[1] = position[0] - 'a';
+            coord[2] = int.Parse(position.Substring(1))-1;
+            return true;
+        }
 
     }
 }

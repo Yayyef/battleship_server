@@ -17,7 +17,7 @@ namespace src
 
     public class ShipGrid
     {
-        Ship[,] grid;
+        public Ship[,] grid;
         public int length, width;
 
         // Permet le création de la grille. Length donne le nombre de lignes, width le nombre de colonnes. Il faudra changer width en height

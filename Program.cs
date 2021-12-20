@@ -8,6 +8,8 @@ namespace src
     internal class Program
     {
 
+        public static int[] coordinates = new int[2];
+
         static void Main(string[] args)
         {
 
@@ -46,16 +48,32 @@ namespace src
 
             battleField.Display();
 
-          
+            BS_Server server = new BS_Server();
+            server.StartServer();
+
             int clientShips = 3;
 
-            //while (clientShips > 0 && myTroops.Count > 0)
-            //{
-            //    game loop
-            //}
+            while (clientShips > 0 && myTroops.Count > 0)
+            {
+                string enemyChoice = server.GetPosition(coordinates);
+                Console.WriteLine("The ennemy is firing at " + enemyChoice);
+                Ship s = battleField.grid[coordinates[1], coordinates[0]];
+                if ( s!= null )
+                {
+                    battleField.grid[coordinates[1], coordinates[0] = null;
+                    s.health--;
+                    if(s.health==0)
+                    {
+                        server.SendResponse("sunk");
+
+                    }
+                }
+
+            }
 
 
-;
+
         }
+
     }
 }
