@@ -37,7 +37,7 @@ namespace src
         {
            
             int received = clientSocket.Receive(data);
-            string position = Encoding.ASCII.GetString(data, 0, received).ToLower();
+            string position = Encoding.ASCII.GetString(data);
             if(!GetCoord(position,outPos))
             {
                 Console.WriteLine("Bad input from client. Aborting...");
@@ -69,7 +69,7 @@ namespace src
              }
 
             int received = clientSocket.Receive(data);
-            return Encoding.ASCII.GetString(data, 0, received).ToLower();
+            return Encoding.ASCII.GetString(data);
 
         }
         ~BS_Server()
@@ -90,8 +90,8 @@ namespace src
         {
             if (position.Length < 2)
                 return false;
-            coord[1] = position[0] - 'a';
-            coord[2] = int.Parse(position.Substring(1))-1;
+            coord[0] = position[0] - 'a';
+            coord[1] = int.Parse(position.Substring(1))-1;
             if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 9)
                 return false;
             return true;
