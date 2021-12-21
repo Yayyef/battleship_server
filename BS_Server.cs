@@ -35,16 +35,21 @@ namespace src
 
         public string GetPosition(int[] outPos)
         {
-           
             int received = clientSocket.Receive(data);
-            string position = Encoding.ASCII.GetString(data);
-            if(!GetCoord(position,outPos))
+            string msg = Encoding.ASCII.GetString(data,0,received);
+            while (clientSocket.Available > 0)
+            {
+                received = clientSocket.Receive(data);
+                msg += Encoding.ASCII.GetString(data,0,received);
+            }
+            Console.WriteLine(msg);
+            if (!GetCoord(msg, outPos))
             {
                 Console.WriteLine("Bad input from client. Aborting...");
                 return "";
             }
 
-            return position;
+            return msg;
         }
 
         public void SendResponse(string message)
@@ -62,15 +67,22 @@ namespace src
 
         public string GetResponse()
         {
-             if (clientSocket == null)
-             {
+            
+            if (clientSocket == null)
+            {
                 Console.WriteLine("Start the server before sending positions stupid");
                 return "" ;
-             }
+            }
 
             int received = clientSocket.Receive(data);
-            return Encoding.ASCII.GetString(data);
+            string msg = Encoding.ASCII.GetString(data,0 , received);
 
+            while (clientSocket.Available > 0)
+            {
+                received = clientSocket.Receive(data);
+                msg += Encoding.ASCII.GetString(data,0,received);
+            }
+            return msg;
         }
         ~BS_Server()
         {
@@ -91,7 +103,7 @@ namespace src
             if (position.Length < 2)
                 return false;
             coord[0] = position[0] - 'a';
-            coord[1] = int.Parse(position.Substring(1))-1;
+            coord[1] = Convert.ToInt32(position.Substring(1))-1;
             if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 9)
                 return false;
             return true;
