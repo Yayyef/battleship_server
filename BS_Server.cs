@@ -33,7 +33,6 @@ namespace src
         }
 
 
-   
         public string GetPosition(int[] outPos)
         {
            
@@ -93,6 +92,8 @@ namespace src
                 return false;
             coord[1] = position[0] - 'a';
             coord[2] = int.Parse(position.Substring(1))-1;
+            if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 9)
+                return false;
             return true;
         }
 

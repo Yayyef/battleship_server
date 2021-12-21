@@ -68,10 +68,10 @@ namespace src
                     if (s.health == 0)
                     {
                         Console.WriteLine("... and BOOM you got hit !");
-                        server.SendResponse("sunk");
-                        myTroops.Remove(s);
                         Console.WriteLine("your ship got destroyed :'(");
+                        myTroops.Remove(s);
                         Console.WriteLine("you have " + myTroops.Count + " ship(s) left");
+                        server.SendResponse("sunk");
 
                     }
                     else
@@ -131,18 +131,21 @@ namespace src
                     case "missed":
                         {
                             g.ChangeState(x, y, false);
+                            Console.WriteLine("You missed !!");
                             break;
 
                         }
                     case "hit":
                         {
                             g.ChangeState(x, y, true);
+                            Console.WriteLine("You hit !! Well played");
                             break;
                         }
 
                     case "sunk":
                         {
                             g.ChangeState(x, y, true);
+                            Console.WriteLine("You hit and sunk their ship !! Congratz");
                             clientShips--;
                             break;
                         }
@@ -157,7 +160,10 @@ namespace src
 
             }
 
-
+            if(clientShips==0)
+            {
+                Console.WriteLine("You Won !!! Well done");
+            }
 
         }
 

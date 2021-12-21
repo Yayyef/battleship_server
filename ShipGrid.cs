@@ -20,7 +20,7 @@ namespace src
         public Ship[,] grid;
         public int length, width;
 
-        // Permet le création de la grille. Length donne le nombre de lignes, width le nombre de colonnes. Il faudra changer width en height
+        // Permet le création de la grille. Length donne le nombre de lignes, width le nombre de colonnes. Il faudra changer length en height
         public ShipGrid(Ship[,] sgrid)
         {
             length = sgrid.GetLength(0);
